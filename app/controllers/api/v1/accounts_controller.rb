@@ -1,16 +1,14 @@
 module Api
   module V1
     class AccountsController < ApplicationController
-      before_action :authenticate, only: [:create, :destroy]
+      before_action :authenticate
 
       def create
         authenticate_with_http_token do |token, options|
           decoded_token = FirebaseHelper::Auth.verify_id_token(token)
-          user = User.new(
-            nickname: decoded_token['decoded_token'][:payload]['name'],
-            uid:      decoded_token['uid']
-          )
-          if user.save
+
+          if User.create_with(nickname: decoded_token['decoded_token'][:payload]['name'])
+                 .find_or_create_by(uid: decoded_token['uid'])
             render status: 200, json: { message: 'success' }
           else
             logger.error user.errors.full_messages

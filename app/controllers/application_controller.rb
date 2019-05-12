@@ -34,23 +34,4 @@ class ApplicationController < ActionController::API
       end
     end
   end
-  
-  #def authenticate
-  #  puts "ロードセッション " + session['uid'] if session['uid']
-  #  if session['uid']
-  #    true
-  #  else
-  #    authenticate_with_http_token do |token, options|
-  #      begin
-  #        decoded_token = FirebaseHelper::Auth.verify_id_token(token)
-  #        session['uid'] = decoded_token['uid']
-  #        puts "セッション " + session['uid']
-  #      rescue => error
-  #        logger.error error.message
-  #        #logger.error error.backtrace.join("\n")
-  #        render status: 401, json: { message: 'Unauthorized' } and return
-  #      end
-  #    end
-  #  end
-  #end
 end

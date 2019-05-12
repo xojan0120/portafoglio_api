@@ -50,14 +50,6 @@ module Api
         end
       end
 
-      def check
-        if Site.find_by(id: params[:site_id])
-          render status: 200, json: { message: 'success' }
-        else
-          render status: 404, json: { message: 'Not found' }
-        end
-      end
-
       def update
         site = Site.find_by(id: params[:site_id])
         if site
@@ -94,8 +86,8 @@ module Api
       private
 
         def site_params
-          skills = params[:usedSkills].inject([]) do |arr, skill|
-            arr << Skill.find_by(name: skill[:value])
+          skills = params[:usedSkills].inject([]) do |arr, usedSkill|
+            arr << Skill.find_or_create_by(name: usedSkill[:value])
             arr
           end
           
